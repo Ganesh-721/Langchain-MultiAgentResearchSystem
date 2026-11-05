@@ -1,0 +1,12 @@
+langchain
+langchain-openai
+langgraph
+langchain-tavily
+
+streamlit
+beautifulsoup4
+requests
+readability-lxml
+trafilatura
+lxml
+python-dotenv
