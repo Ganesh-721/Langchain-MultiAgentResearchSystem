@@ -1,5 +1,10 @@
-from src.tools.tools import web_search, scrape_url
+from src.pipelines.pipelines import run_research_pipeline
 
+if __name__ == "__main__":
+    topic = "Artificial Intelligence in Healthcare"
+    results = run_research_pipeline(topic)
+    print("Research Report:")
+    print(results["research_report"])
+    print("\nCritique:")
+    print(results["critique"])
 
-scraped_content = scrape_url.invoke({"url": "https://www.nbcnews.com/business/markets/tech-stocks-plunge-ai-midterms-rcna607650"})
-print(scraped_content)
