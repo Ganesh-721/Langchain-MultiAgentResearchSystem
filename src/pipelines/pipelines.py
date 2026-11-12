@@ -1,15 +1,10 @@
-import json
-
 from src.agents.agents import writer_chain, critic_chain
-from src.tools.tools import web_search, scrape_url
+from src.tools.tools import get_search_results, scrape_url
 
 
 def run_research_pipeline(topic: str) -> dict:
-    # Search and decode Tavily's JSON response
-    raw_search = web_search.invoke({"query": topic})
-    search_data = json.loads(raw_search)
+    search_data = get_search_results(topic)
 
-    # Scrape each result
     scraped_contents = []
 
     for result in search_data.get("results", []):
@@ -23,15 +18,12 @@ def run_research_pipeline(topic: str) -> dict:
     if not scraped_contents:
         raise RuntimeError(f"No pages could be scraped for topic: {topic}")
 
-    # Write the report, then critique it
     research_report = writer_chain.invoke({
         "topic": topic,
         "research": "\n\n".join(scraped_contents),
     })
 
-    critique = critic_chain.invoke({
-        "report": research_report,
-    })
+    critique = critic_chain.invoke({"report": research_report})
 
     return {
         "research_report": research_report,
